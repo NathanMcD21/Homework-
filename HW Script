@@ -1,0 +1,21 @@
+f = findobj('linewidth' , 0.5);
+set(f, 'linewidth' , 2); 
+ 
+set(gca, 'linewidth', 1.5); 
+set(gca, 'fontsize' , 18); 
+set(gca, 'ticklength', [0.03 0.025]); 
+set(gca, 'tickdir' , 'out'); 
+
+box off, grid on; 
+
+set(gcf, 'position', [200 200 440 330]);
+set(gcf, 'Color' , [1 1 1]); 
+
+title('Nathan McDonald', 'fontweight', 'bold', 'fontsize', 18);
+xlabel('Radians', 'fontweight', 'bold', 'fontsize', 18); 
+ylabel('Amplitude', 'fontweight', 'bold', 'fontsize', 18); 
+
+
+
+ 
+
