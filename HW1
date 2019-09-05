@@ -1,0 +1,31 @@
+x = 0:pi/100:2*pi;  
+s = sin(x./2); 
+s2 = sin(x); 
+s3 = sin(2.*x); 
+Sums = s + s2/2 + s3/3; 
+
+f1= figure; 
+f2 = figure; 
+
+figure(f1);
+plot(s)
+hold on 
+plot(s2)
+plot(s3) 
+hold off 
+
+title('Nathan McDonald'); 
+xlabel('Radians'); 
+ylabel('Amplitude'); 
+
+figure(f2); 
+plot(Sums,x); 
+title('Nathan McDonald');
+xlabel('Radians'); 
+ylabel('Amplitude'); 
+
+
+
+
+
+
