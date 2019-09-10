@@ -1,21 +1,29 @@
-f = findobj('linewidth' , 0.5);
-set(f, 'linewidth' , 2); 
- 
-set(gca, 'linewidth', 1.5); 
-set(gca, 'fontsize' , 18); 
-set(gca, 'ticklength', [0.03 0.025]); 
-set(gca, 'tickdir' , 'out'); 
+x = 0:pi/100:2*pi;  
+s = sin(x./2); 
+s2 = sin(x); 
+s3 = sin(2.*x); 
+Sums = s + s2/2 + s3/3; 
 
-box off, grid on; 
+f1= figure; 
+f2 = figure; 
 
-set(gcf, 'position', [200 200 440 330]);
-set(gcf, 'Color' , [1 1 1]); 
+figure(f1);
+plot(s)
+hold on 
+plot(s2)
+plot(s3) 
+hold off 
 
-title('Nathan McDonald', 'fontweight', 'bold', 'fontsize', 18);
-xlabel('Radians', 'fontweight', 'bold', 'fontsize', 18); 
-ylabel('Amplitude', 'fontweight', 'bold', 'fontsize', 18); 
+PlotScript;
+
+figure(f2); 
+plot(x,Sums); 
+
+PlotScript;
 
 
 
- 
+
+
+
 
