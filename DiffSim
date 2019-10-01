@@ -1,8 +1,8 @@
 function [dxW, dyW] = diffSim( standardDev )
     
-    windowSize = 45;
-    delta = windowSize/100;
-    noiz = 0.1;
+    windowSize = 10;
+    delta = 1;
+    noiz = 0;
     time = 500;
     
 %     parseinputs
@@ -29,7 +29,7 @@ function [dxW, dyW] = diffSim( standardDev )
     dyW = dy+(windowSize+1)/2;
     
     % used tabs for readability!!
-    for t=1:time
+    for t=1
         
 % 5.) Read the following code and determine what is different from the
 % original code contained in the fspecial function.
@@ -60,7 +60,7 @@ function [dxW, dyW] = diffSim( standardDev )
         
         hold off
     
-        pause(0.04) % provide time for matlab to draw
+        pause(0.01) % provide time for matlab to draw
     
     end
     
