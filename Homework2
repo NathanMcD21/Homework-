@@ -1,3 +1,4 @@
+%% loop that will run simulation 25 seperate times 
 x = 0; 
 for x = 0:25
     c = 1; 
@@ -9,6 +10,14 @@ for x = 0:25
     
 end
     
+%% HWGraph 
+[dx,dy] = diffSim(2); 
+MSD = msdfunction(dx,dy); 
+figure(2) 
+hold on 
+plot(MSD) 
+
+
 
   
 	
