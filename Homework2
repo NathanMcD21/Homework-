@@ -1,0 +1,14 @@
+x = 0; 
+for x = 0:25
+    c = 1; 
+    if x <= 24
+        x = x + c
+        HWGraph
+    end 
+    
+    
+end
+    
+
+  
+	
