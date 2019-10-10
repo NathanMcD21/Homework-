@@ -1,0 +1,20 @@
+Ball = imread('BasketBall.jpeg'); 
+noise = Binary + 0.5.*n; 
+BinaryImage(noise); 
+% figure
+% imagesc(noise); 
+% figure
+% expmax(noise)
+a = an2(noise , 1 , 50);
+imagesc(a>expmax(a)) 
+
+%run noise with different amplitudes 
+
+%run through an2 for each amplitude and store output
+
+%
+
+%%
+function [BW] = BinaryImage(img)
+I = rgb2gray(img); %converting RGB picture to gray scale
+BW = im2bw(I,0.5); %converts grayscale image to Binary 
