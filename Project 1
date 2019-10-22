@@ -1,20 +1,48 @@
-t = 5;
-center = ones(t,2); %preallocating the size of a storage array 
+for z = 1:3
+t = 25;   
 
+if z == 1 %code for Leclerc algorithim 
+ 
+center = ones(t,2); %preallocating the size of a storage array 
+c1 = ones(t,2); 
 for x = 1:t
    
     p = pistachios(x);
-    figure
     
     % converting the struct p into a usable variable
     seeStack(p);
-    C = struct2cell(p); 
-    A = cell2mat(C); 
     
-    thr = expmax(A); % this finds the threshold of the noisy image
+    
+    C = struct2cell(p); 
+    if x == 1
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    elseif x == 7
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:2))*1.2; 
+    elseif x == 11
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1; 
+    elseif x == 24
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1;   
+    else 
+        L = struct2cell(pistachios(1)); 
+        K = cell2mat(L); 
+        A = cell2mat(C) - K; 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    end 
+    
     denoised = an2(A,2,100); %denoising using diffusion
 
-    thr2 = expmax(denoised); %finds the threshold of the denoised image 
     binary = denoised > thr; %look at homework 3 solution 
     figure, imagesc(binary)
  
@@ -31,4 +59,132 @@ end
 figure(100)
 plot(center(:,1),center(:,2),'-x')
 plotScript
+title('Track of Center for Denoised Images Using Leclerc'); 
+    
+
+elseif z == 2 % code for Lorentz algorithim 
+     
+center1 = ones(t,2); %preallocating the size of a storage array 
+
+for x = 1:t
+   
+    p = pistachios(x);
+    
+    % converting the struct p into a usable variable
+    seeStack(p);
+    
+    
+    C = struct2cell(p); 
+    if x == 1
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    elseif x == 7
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.2; 
+    elseif x == 11
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1; 
+    elseif x == 24
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1;   
+    else 
+        L = struct2cell(pistachios(1)); 
+        K = cell2mat(L); 
+        A = cell2mat(C) - K; 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    end 
+    
+    denoised = an2(A,3,100); close %denoising using diffusion
+
+    binary = denoised > thr; %look at homework 3 solution 
+    figure, imagesc(binary)
+ 
+    Cent = regionprops(binary,'Centroid'); %finding the centroid 
+    c = cat(1,Cent.Centroid); 
+    
+    center1(x,1) = c(1,1); %Storing the Centroid in to an array for future 
+    center1(x,2) = c(1,2); 
+
+    
+  
+end
+
+figure(101)
+plot(center1(:,1),center1(:,2),'-x')
+plotScript
+title('Track of Center for Denoised Images Using Tukey'); 
+    
+
+elseif z == 3 %code for Tukey algorithim 
+
+center3 = ones(t,2); %preallocating the size of a storage array 
+c1 = ones(t,2); 
+for x = 1:t
+   
+    p = pistachios(x);
+    
+    % converting the struct p into a usable variable
+    seeStack(p);
+    
+    
+    C = struct2cell(p); 
+    if x == 1
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    elseif x == 7
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:2))*1.2; 
+    elseif x == 11
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1; 
+    elseif x == 24
+        L = struct2cell(pistachios(5)); 
+        K = cell2mat(L); 
+        A = K - cell2mat(C); 
+        thr = expmax(A(:,1:3))*1.1;   
+    else 
+        L = struct2cell(pistachios(1)); 
+        K = cell2mat(L); 
+        A = cell2mat(C) - K; 
+        thr = expmax(A(:,1:3)); % this finds the threshold of the noisy image
+    end 
+    
+    denoised = an2(A,1,100); %denoising using diffusion
+
+    binary = denoised > thr; %look at homework 3 solution 
+    figure, imagesc(binary)
+ 
+    Cent = regionprops(binary,'Centroid'); %finding the centroid 
+    c = cat(1,Cent.Centroid); 
+    
+    center3(x,1) = c(1,1); %Storing the Centroid in to an array for future 
+    center3(x,2) = c(1,2); 
+
+    
+  
+end
+
+figure(102)
+plot(center3(:,1),center3(:,2),'-x')
+plotScript
+title('Track of Center for Denoised Images Using Lorentz'); 
+    
+
+
+end 
+end 
    
