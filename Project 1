@@ -1,0 +1,33 @@
+
+for x = 1:2
+    p = pistachios(x);
+    figure(x)
+    
+    % converting the struct p into a usable variable
+    seeStack(p)
+    C = struct2cell(p); 
+    A = cell2mat(C); 
+    
+    thr = expmax(A); % this finds the threshold of the noisy image
+    denoised = an2(A,1,25); %denoising using diffusion 
+    imagesc(denoised)
+%     close %closes the nonbinary denoised image
+    thr2 = expmax(denoised); %finds the threshold of the denoised image 
+%     binary = denoised > thr2; %look at homework 3 solution 
+%     figure, imagesc(binary)
+ 
+%     Centroid = regionprops(denoised,'Centroid');
+%     
+%     figure, hold on
+%     plot(x,Centroid(:,x))
+%     
+   
+ 
+    
+    
+    
+    
+    
+    
+    
+end
