@@ -1,33 +1,34 @@
+t = 5;
+center = ones(t,2); %preallocating the size of a storage array 
 
-for x = 1:2
+for x = 1:t
+   
     p = pistachios(x);
-    figure(x)
+    figure
     
     % converting the struct p into a usable variable
-    seeStack(p)
+    seeStack(p);
     C = struct2cell(p); 
     A = cell2mat(C); 
     
     thr = expmax(A); % this finds the threshold of the noisy image
-    denoised = an2(A,1,25); %denoising using diffusion 
-    imagesc(denoised)
-%     close %closes the nonbinary denoised image
+    denoised = an2(A,2,100); %denoising using diffusion
+
     thr2 = expmax(denoised); %finds the threshold of the denoised image 
-%     binary = denoised > thr2; %look at homework 3 solution 
-%     figure, imagesc(binary)
+    binary = denoised > thr; %look at homework 3 solution 
+    figure, imagesc(binary)
  
-%     Centroid = regionprops(denoised,'Centroid');
-%     
-%     figure, hold on
-%     plot(x,Centroid(:,x))
-%     
-   
- 
+    Cent = regionprops(binary,'Centroid'); %finding the centroid 
+    c = cat(1,Cent.Centroid); 
     
+    center(x,1) = c(1,1); %Storing the Centroid in to an array for future 
+    center(x,2) = c(1,2); 
+
     
-    
-    
-    
-    
-    
+  
 end
+
+figure(100)
+plot(center(:,1),center(:,2),'-x')
+plotScript
+   
