@@ -10,7 +10,7 @@ for x = 1:t
     p = pistachios(x);
     
     % converting the struct p into a usable variable
-    seeStack(p);
+    seeStack(p); close
     
     
     C = struct2cell(p); 
@@ -44,7 +44,7 @@ for x = 1:t
     denoised = an2(A,2,100); %denoising using diffusion
 
     binary = denoised > thr; %look at homework 3 solution 
-    figure, imagesc(binary)
+    figure, imagesc(binary), close
  
     Cent = regionprops(binary,'Centroid'); %finding the centroid 
     c = cat(1,Cent.Centroid); 
@@ -56,10 +56,7 @@ for x = 1:t
   
 end
 
-figure(100)
-plot(center(:,1),center(:,2),'-x')
-plotScript
-title('Track of Center for Denoised Images Using Leclerc'); 
+
     
 
 elseif z == 2 % code for Lorentz algorithim 
@@ -71,7 +68,7 @@ for x = 1:t
     p = pistachios(x);
     
     % converting the struct p into a usable variable
-    seeStack(p);
+    seeStack(p); close
     
     
     C = struct2cell(p); 
@@ -105,7 +102,7 @@ for x = 1:t
     denoised = an2(A,3,100); close %denoising using diffusion
 
     binary = denoised > thr; %look at homework 3 solution 
-    figure, imagesc(binary)
+    figure, imagesc(binary),close
  
     Cent = regionprops(binary,'Centroid'); %finding the centroid 
     c = cat(1,Cent.Centroid); 
@@ -117,22 +114,19 @@ for x = 1:t
   
 end
 
-figure(101)
-plot(center1(:,1),center1(:,2),'-x')
-plotScript
-title('Track of Center for Denoised Images Using Tukey'); 
+
     
 
 elseif z == 3 %code for Tukey algorithim 
 
-center3 = ones(t,2); %preallocating the size of a storage array 
+center2 = ones(t,2); %preallocating the size of a storage array 
 c1 = ones(t,2); 
 for x = 1:t
    
     p = pistachios(x);
     
     % converting the struct p into a usable variable
-    seeStack(p);
+    seeStack(p); close
     
     
     C = struct2cell(p); 
@@ -166,25 +160,47 @@ for x = 1:t
     denoised = an2(A,1,100); %denoising using diffusion
 
     binary = denoised > thr; %look at homework 3 solution 
-    figure, imagesc(binary)
+    figure, imagesc(binary),close
  
     Cent = regionprops(binary,'Centroid'); %finding the centroid 
     c = cat(1,Cent.Centroid); 
     
-    center3(x,1) = c(1,1); %Storing the Centroid in to an array for future 
-    center3(x,2) = c(1,2); 
+    center2(x,1) = c(1,1); %Storing the Centroid in to an array for future 
+    center2(x,2) = c(1,2); 
 
     
   
 end
 
+
+   
+end 
+end 
+
+figure(100)
+hold on 
+plot(center(:,1),center(:,2),'-o')
+plot(center(1,1),center(1,2),'rx')
+plot(center(t,1),center(t,2),'rs')
+hold off
+plotScript
+title('Track of Center for Denoised Images Using Leclerc'); 
+
+figure(101)
+hold on
+plot(center1(:,1),center1(:,2),'-o')
+plot(center1(1,1),center1(1,2),'rx')
+plot(center1(t,1),center1(t,2),'rs')
+hold off
+plotScript
+title('Track of Center for Denoised Images Using Tukey'); 
+
 figure(102)
-plot(center3(:,1),center3(:,2),'-x')
+hold on
+plot(center2(:,1),center2(:,2),'-o')
+plot(center2(1,1),center2(1,2),'rx')
+plot(center2(t,1),center2(t,2),'rs')
+hold off
 plotScript
 title('Track of Center for Denoised Images Using Lorentz'); 
-    
-
-
-end 
-end 
    
