@@ -1,0 +1,20 @@
+OGCent = ones(25,2);
+for a = 1:25
+    pt = pistachios(a);
+    figure
+    seeStack(pt); close
+    C = struct2cell(pt);
+    A = cell2mat(C);
+    s = select(A);
+    OGCent(a,1) = s(1,1);
+    OGCent(a,2) = s(1,2); 
+end
+
+figure(105)
+hold on 
+plot(OGCent(:,1),OGCent(:,2),'-o')
+plot(OGCent(1,1),OGCent(1,2),'rx')
+plot(OGCent(25,1),OGCent(25,2),'rs')
+hold off
+plotScript
+title('Track of Center for Orignal Image'); 
