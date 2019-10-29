@@ -1,0 +1,31 @@
+
+Description = {'Small Uniform Glands';'More space between glands'...
+    ;'Distinctly infiltration of cells from glands at margins'...
+    ;'Irregular masses of neoplastic cells with few glands'...
+    ; 'Lack of or occasional glands, sheets of cells'}; 
+GleasonRow = {'Row 1'; 'Row 2'; 'Row 3'; ...
+    'Row 4'; 'Row 5'}; 
+Quantitative = table(GleasonRow,Description); 
+
+%% ImageProcessing Function
+function num = ImageProcessing(img)
+
+image = imread(img); 
+Binary = im2bw(image,0.28); 
+imagesc(Binary)
+
+
+
+
+roundness = 0; 
+lwratio = 0; 
+a = 0;  
+
+ 
+
+
+
+
+
+num = [roundness lwratio a]; 
+end
