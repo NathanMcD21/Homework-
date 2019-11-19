@@ -1,0 +1,31 @@
+%% 1
+loadAll
+a = select(Low); 
+
+%% 2
+dispColor(a)
+
+%% 3
+[I, Th, Rh] = colorHist(a); 
+
+%%4
+dex = Rh > 0.2; 
+dex2 = Th < 4.2; 
+D = dex.*dex2;
+
+%% 5 
+stats = regionprops(D==1, 'Area', 'Centroid'); 
+
+%% 6 
+areas = [stats.Area]; 
+cnts = [stats.Centroid]; 
+xy = [cnts(1:2:end)' cnts(2:2:end)']; 
+
+%% 7
+dst = aveDist(xy);
+s = sort(dst); 
+nhist(s(2,:),20); 
+
+%% 8 
+nhist(areas,20); 
+
