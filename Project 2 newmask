@@ -1,0 +1,9 @@
+thr = colorSpace(a); 
+stats2 = regionprops(thr<85, 'Area', 'Centroid'); 
+areas2 = [stats2.Area]; 
+cnts2 = [stats2.Centroid]; 
+xy2 = [cnts2(1:2:end)' cnts2(2:2:end)']; 
+dst2 = aveDist(xy2);
+s2 = sort(dst2); 
+nhist(s2(2,:),20); 
+nhist(areas2,20); 
