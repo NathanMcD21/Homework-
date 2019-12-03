@@ -1,0 +1,33 @@
+%% step 1 
+loadAll; 
+a = select(Low); 
+
+%% step 2
+dispColor(a); 
+
+%% step3
+[I,Th,Rh] = colorHist(a); 
+
+
+%% step 7
+
+[v,~,Rx,Ry] = colorRot(a); 
+
+%% step 8
+
+v2 = v(2, :)*Rx*Ry; 
+
+plot3([0 v(1,1)] , [0 v(1,2)] , [0 v(1,3)], 'r') 
+hold on 
+plot3([0 v2(1,1)] , [0 v2(1,2)] , [0 v2(1,3)], 'b')
+
+
+%%step 9 
+
+[q,w,e] = pca(v); 
+v3 = v(2,:)*q;
+
+plot3([0 v3(1,1)] , [0 v3(1,2)] , [0 v3(1,3)], 'g')
+
+
+
