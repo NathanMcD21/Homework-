@@ -1,16 +1,20 @@
-scopearray = ["scope_0.csv"; "scope_1.csv";"scope_2.csv";"scope_3.csv";
-    "scope_4.csv";"scope_5.csv";"scope_6.csv";"scope_7.csv";"scope_8.csv";
-  "scope_9.csv";"scope_10.csv";"scope_11.csv";"scope_12.csv"] ;
-
-
-function DampingFunc(x,set)
+function [wn,b,wd,ke,m,zeta,delta] = DampingFunc(input,set,leng,width,height,e)
 %% Acquiring Data and Fourier Transform
-x = importdata('Scope_4.csv',',',4); 
+
+x = importdata(input,',',4); 
 t = x.data(:,1);
 v = x.data(:,2); 
 
+
+len = leng;
+wid = width;
+h = height;
+E = e;
+I = (1/12)*wid*(h^3);
+
+
 both = [v,t];
-dt=0.0001;
+dt=(t(length(t))-(t(1)))/(numel(t)-1);
 
 [rowIdcs,~] = find(isnan(both)); 
 both(rowIdcs,:) = [];
@@ -18,6 +22,7 @@ both(rowIdcs,:) = [];
 subplot(3,1,1)
 plot(both); %just plots the data as a whole and shows the natural...
 xlabel('Time(s)'); ylabel('Voltage(V)');
+title(set)
 
 n = length(t);
 fhat = fft(both,n);
@@ -29,13 +34,14 @@ p = [freq(L);PSD(L)];
 
 subplot(3,1,2)
 plot(p(1,:),p(2,:),'c','LineWidth',1)
+ylabel('Power (W)'); xlabel('Frequency(Hz)');
 %%
-[maxpow] = findpeaks(p(2,:),'threshold',5);
+maxpow = max(p(2,:));
 loca = find(p(2,:)== maxpow); 
-w = p(1,loca); 
+wd = p(1,loca); 
 
 %% Finding the Positive Peaks
-[pks,locs] = findpeaks(both(:,1),'minpeakheight',.1); 
+[pks,locs] = findpeaks(both(:,1),'minpeakheight',.4); 
 %determines both the maximum and minumum peaks for the data, includes noise
 %need to figure out how to get rid of majority of noise
 
@@ -49,7 +55,6 @@ final(rowIdcs,:) = []; %deletes the negative peak and time data
 
 %fits an exponential plot to the the positive peaks 
 efit = fit(final(:,2),final(:,1),'exp1'); 
-A = efit.a; %gives the a coefficient of y = a*exp(b*x) 
 B = efit.b; %gives the b coefficient of y = a*exp(b*x) 
 
 %% Plotting Exponential Fit 
@@ -64,13 +69,98 @@ hold off
 
 %% Solving for Damping Coeffiecent 
 
-b = B/w;
-wn = w/(sqrt(1-(b^2)));
+var = final(5,2)/final(1,2);
+delta = log(var);
 
-table(b,wn)
+%% Solving for Damping Ratio
+
+zeta = 1/(sqrt(1+((2*pi/delta)^2)));
+
+%% Solving for Natural Frequency 
+
+wn = wd/(1-(zeta^2));
+wnrad = wn*6.28;
+
+%% Solving for ke and m
+
+ke = (3*E*I)/(len^3);
+
+m = ke/(wnrad^2);
+
+b = zeta*(sqrt(ke*m));
+
+
+end
+
+-------------------------------------------------------------------
+
+scopearray = ["scope_6.csv";"scope_5.csv";"scope_7.csv";"scope_4.csv";...
+    "scope_1.csv"; "scope_0.csv";"scope_2.csv"; "scope_3.csv";...
+    "scope_12.csv";"scope_9.csv"; "scope_8.csv";  "scope_10.csv";...
+    "scope_11.csv"];
+
+Measurement = ["Just Piezoelectric: 1.4cm";"Just Piezoelectric: 2cm"; ... 
+    "Just Piezoelectric: 2.2cm";"Art Ruler: 4cm";...
+    "Art Ruler: 5cm";"Art Ruler: 6cm";"Art Ruler: 7cm";...
+    "Art: 8cm"; "Machinist Ruler: 4cm";"Machinist Ruler: 5cm";...
+    "Machinist Ruler: 6cm";"Machinist Ruler: 7cm";"Machinist Ruler: 8cm"];
+
+length = [1.4E-2,2E-2,2.2E-2, 4E-2,5E-2,6E-2,7E-2,8E-2,4E-2,5E-2,6E-2,...
+     7E-2,8E-2];
+
+Height = [1,1,1,2E-3,2E-3,2E-3,2E-3,2E-3,1E-3,1E-3,1E-3,1E-3,1E-3];
+
+Width = [1, 1, 1, 2.5E-2, 2.5E-2, 2.5E-2,...
+    2.5E-2, 2.5E-2, 2.6E-2, 2.6E-2, 2.6E-2, 2.6E-2, 2.6E-2];
+
+E = [3E9,3E9,3E9,3.2E9,3.2E9,3.2E9, ...
+    3.2E9,3.2E9 200E9,200E9,200E9,200E9,200E9,];
+
+Natural_Frequency_Hz = ones(numel(scopearray),1);
+Damped_Frequency_Hz = ones(numel(scopearray),1);
+Damping_Coefficient = ones(numel(scopearray),1);
+Lograthmic_Decrament = ones(numel(scopearray),1);
+Equivalent_Spring_Constant = ones(numel(scopearray),1);
+Equivalent_Mass_kg = ones(numel(scopearray),1);
+Damping_Ratio = ones(numel(scopearray),1);
+
+
+for n = 1:numel(scopearray)
+figure 
+[wn,b,wd,ke,m,zeta,delta] = DampingFunc(scopearray(n),Measurement(n),...
+    length(n),Height(n), Width(n),E(n));
+
+Natural_Frequency_Hz(n) = wn;
+Damped_Frequency_Hz(n) = wd;
+Damping_Coefficient(n) = b;
+Lograthmic_Decrament(n) = delta;
+Equivalent_Spring_Constant(n) = ke;
+Equivalent_Mass_kg(n) = m;
+Damping_Ratio(n) = zeta;
+
+table(Measurement,Natural_Frequency_Hz,Damped_Frequency_Hz,...
+    Damping_Coefficient,Lograthmic_Decrament,Equivalent_Spring_Constant,...
+    Equivalent_Mass_kg,Damping_Ratio)
 end
 
 
- 
+figure
+plot(length(1:3),Natural_Frequency_Hz(1:3))
+title('Piezoelectric Sensor: Length vs Natural Frequency')
+xlabel('Length(m)')
+ylabel('Natural Frequency(HZ)')
 
+
+figure
+plot(length(4:8),Natural_Frequency_Hz(4:8))
+title('Art Ruler: Length vs Natural Frequency')
+xlabel('Length(m)')
+ylabel('Natural Frequency(HZ)')
+
+
+figure
+plot(length(9:13),Natural_Frequency_Hz(9:13))
+title('Machinist Ruler:Length vs Natural Frequency')
+xlabel('Length(m)')
+ylabel('Natural Frequency(HZ)')
 
